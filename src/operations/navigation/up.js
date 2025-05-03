@@ -7,8 +7,7 @@ export const up = (args, state) => {
   const parentDir = path.dirname(state.currentDir);
 
   if (!parentDir.startsWith(rootDir)) {
-    console.log('Root directory is reached!');
-    return;
+    throw new Error('Root directory is reached!');
   }
 
   state.currentDir = parentDir;
