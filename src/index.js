@@ -2,13 +2,14 @@ import { createInterface } from 'node:readline/promises';
 import os from 'node:os';
 import { stdin, stdout } from 'node:process';
 import { getArg } from './utils/getArg.js';
+import operations from './operations/operations.js';
 
 const username = getArg('username');
-const homedir = os.homedir();
 const rl = createInterface({ input: stdin, output: stdout });
 
+const state = { currentDir: os.homedir() };
+
 console.log(`Welcome to File manager, ${username}`);
-console.log(`You are currently in ${homedir}`);
 
 rl.on('SIGINT', () => {
   rl.clearLine();
@@ -21,10 +22,17 @@ rl.on('close', () => {
 });
 
 while (true) {
-  const input = await rl.question('>> ');
-  const [command, ...args] = input.trim().split(' ');
+  console.log(`You are currently in ${state.currentDir}`);
 
-  if (command === '.exit') {
+  const input = await rl.question('>> ');
+  const [commandName, ...args] = input.trim().split(' ');
+
+  if (commandName === '.exit') {
     rl.close();
+  }
+
+  const command = operations.get(commandName);
+  if (command) {
+    command(args, state);
   }
 }
