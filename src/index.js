@@ -5,7 +5,7 @@ import { getArg } from './utils/getArg.js';
 import operations from './operations/operations.js';
 import { colors } from './utils/colors.js';
 
-const username = getArg('username');
+const username = getArg('username') || 'Anonymous';
 const rl = createInterface({ input: stdin, output: stdout });
 
 const state = { currentDir: os.homedir() };

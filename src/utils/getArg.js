@@ -4,5 +4,5 @@ export const getArg = (key) => {
   const prefix = `--${key}=`;
   const match = args.find((arg) => arg.startsWith(prefix));
 
-  return match.slice(prefix.length);
+  return match ? match.slice(prefix.length) : undefined;
 };
