@@ -3,6 +3,10 @@ import path from 'node:path';
 import { colors } from '../../utils/colors.js';
 
 export const mkdir = async (args, state) => {
+  if (args.length === 0) {
+    throw new Error('Invalid arguments!');
+  }
+
   const dirName = args.join(' ');
   const dirPath = path.resolve(state.currentDir, dirName);
 

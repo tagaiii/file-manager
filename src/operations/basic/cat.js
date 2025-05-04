@@ -4,6 +4,10 @@ import path from 'node:path';
 import { colors } from '../../utils/colors.js';
 
 export const cat = async (args, state) => {
+  if (args.length === 0) {
+    throw new Error('Invalid arguments!');
+  }
+
   const filePath = path.resolve(state.currentDir, args.join(' '));
   try {
     await fsPromises.access(filePath);
