@@ -1,5 +1,4 @@
 import path from 'node:path';
-import os from 'node:os';
 import fs from 'node:fs/promises';
 
 export const cd = async (args, state) => {
@@ -7,17 +6,10 @@ export const cd = async (args, state) => {
     throw new Error('Invalid arguments!');
   }
 
-  const rootDir = path.parse(os.homedir()).root;
-  const targetPath = path.isAbsolute(args.join(' '))
-    ? args.join(' ')
-    : path.resolve(state.currentDir, args.join(' '));
-
-  const relative = path.relative(rootDir, targetPath);
-  const isInsideRoot =
-    relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-  if (!isInsideRoot) {
-    throw new Error('Cannot navigate outside of root directory!');
-  }
+  const inputPath = args.join(' ');
+  const targetPath = path.isAbsolute(inputPath)
+    ? inputPath
+    : path.resolve(state.currentDir, inputPath);
 
   try {
     const stat = await fs.stat(targetPath);
