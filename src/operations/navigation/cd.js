@@ -7,19 +7,18 @@ export const cd = async (args, state) => {
     throw new Error('Invalid arguments!');
   }
 
-  const rootDir = os.homedir();
-  const targetPath = path.isAbsolute(args[0])
-    ? args[0]
-    : path.resolve(rootDir, args[0]);
+  const rootDir = path.parse(os.homedir()).root;
+  const targetPath = path.isAbsolute(args.join(' '))
+    ? args.join(' ')
+    : path.resolve(state.currentDir, args.join(' '));
 
   const relative = path.relative(rootDir, targetPath);
-
   const isInsideRoot =
     relative && !relative.startsWith('..') && !path.isAbsolute(relative);
-
   if (!isInsideRoot) {
     throw new Error('Cannot navigate outside of root directory!');
   }
+
   try {
     const stat = await fs.stat(targetPath);
 

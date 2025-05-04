@@ -1,7 +1,7 @@
 import path from 'node:path';
 import os from 'node:os';
 
-const rootDir = os.homedir();
+const rootDir = path.parse(os.homedir()).root;
 
 export const up = (args, state) => {
   const parentDir = path.dirname(state.currentDir);
