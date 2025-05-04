@@ -7,7 +7,11 @@ export const cd = async (args, state) => {
   }
 
   const inputPath = args.join(' ');
-  const targetPath = path.isAbsolute(inputPath)
+  const isDrivePath = /^.:$/.test(inputPath);
+
+  const targetPath = isDrivePath
+    ? inputPath + '\\'
+    : path.isAbsolute(inputPath)
     ? inputPath
     : path.resolve(state.currentDir, inputPath);
 
