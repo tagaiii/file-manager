@@ -13,16 +13,15 @@ export const cp = async (args, state, withMessage = true) => {
   const destFilePath = path.resolve(state.currentDir, args[1], args[0]);
 
   try {
-    await fsPromises.access(srcFilePath);
-    const readableStream = fs.createReadStream(srcFilePath, 'utf-8');
-
     await fsPromises.mkdir(path.dirname(destFilePath), { recursive: true });
-    const writableStream = fs.createWriteStream(destFilePath, {
-      encoding: 'utf-8',
-      flags: 'wx',
-    });
 
-    await pipeline(readableStream, writableStream);
+    await pipeline(
+      fs.createReadStream(srcFilePath, 'utf-8'),
+      fs.createWriteStream(destFilePath, {
+        encoding: 'utf-8',
+        flags: 'wx',
+      })
+    );
 
     if (withMessage) {
       console.log(
