@@ -4,7 +4,7 @@ import { colors } from '../../utils/colors.js';
 import { cp } from './cp.js';
 
 export const mv = async (args, state) => {
-  if (args.length === 0) {
+  if (args.length !== 2) {
     throw new Error('Invalid arguments!');
   }
 
